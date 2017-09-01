@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link media="all" rel="stylesheet" href="public/stylesheets/style.css">
+    <!--angular-->
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+    <!--core-->
+    <script type="text/javascript" src="app/main.js"></script>
+    <!--services-->
+    <script type="text/javascript" src="app/services/userDbStructureService.js"></script>
+    <!--controllers-->
+    <script type="text/javascript" src="app/controllers/parentController.js"></script>
+ </head>
+<body ng-app="mongo-app">
+    <div class="main-content" ng-controller="parentController">
+        <p><button type="button">Добавить коллекцию</button></p>
+        <form class="bdentity-wrapper" ng-repeat="item in dbStructure.collections">
+            <p>
+                <label><span>Имя коллекции: </span><input type="text" ng-model="item.name"></label>
+                <button type="button">Добавить зависимую коллекцию</button>
+            </p>
+            <p>
+                <button type="button" ng-click="addField(item)">Добавить поле</button>
+            </p>
+            <fieldset ng-repeat="field in item.fields">
+                <label><span>Поиск по полю </span><input type="checkbox" ng-model="field.searchable"></label>
+                <label><span>Название поля: </span><input type="text" ng-model="field.name"></label>
+                <label>
+                    <span>Тип: </span>
+                    <select ng-model="field.selectedType">
+                        <option ng-repeat="fieldType in field.type" value="{{fieldType.value}}">{{fieldType.name}}</option>
+                    </select>
+                </label>
+                <button type="button" ng-click="removeField(item, field)">Удалить поле</button>
+            </fieldset>
+            <!--<div class="subcollection">-->
+                <!--<p>-->
+                    <!--<label><span>Имя субколлекции: </span><input type="text"></label>-->
+                    <!--<label>-->
+                        <!--<span>Тип отношений с колллекцией {{}}: </span>-->
+                        <!--<select>-->
+                            <!--<option value="oneToOne">Один к одному</option>-->
+                            <!--<option value="oneToMany">Один ко многим</option>-->
+                            <!--<option value="manyToOne">Многие к одному</option>-->
+                        <!--</select>-->
+                    <!--</label>-->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--<label>-->
+                        <!--<span>Связать с коллекцией: </span>-->
+                        <!--<select>-->
+                            <!--<option value="{{}}">{{}}</option>-->
+                        <!--</select>-->
+                        <!--<label>-->
+                            <!--<span>Тип отношений с колллекцией {{}}: </span>-->
+                            <!--<select>-->
+                                <!--<option value="oneToOne">Один к одному</option>-->
+                                <!--<option value="oneToMany">Один ко многим</option>-->
+                                <!--<option value="manyToOne">Многие к одному</option>-->
+                            <!--</select>-->
+                        <!--</label>-->
+                    <!--</label>-->
+                <!--</p>-->
+                <!--<p><button type="button">Добавить поле</button></p>-->
+                <!--<fieldset>-->
+                    <!--<label><span>Поиск по полю </span><input type="checkbox"></label>-->
+                    <!--<label><span>Название поля: </span><input type="text"></label>-->
+                    <!--<label>-->
+                        <!--<span>Тип: </span>-->
+                        <!--<select>-->
+                            <!--<option value="string">STRING</option>-->
+                            <!--<option value="number">NUMBER</option>-->
+                            <!--<option value="int">INTEGER</option>-->
+                            <!--<option value="date">DATE</option>-->
+                        <!--</select>-->
+                    <!--</label>-->
+                <!--</fieldset>-->
+            <!--</div>-->
+           <p><button type="button" ng-click="sendData(item)">Отправить данные</button></p>
+        </form>
+    </div>
+</body>
+</html>
