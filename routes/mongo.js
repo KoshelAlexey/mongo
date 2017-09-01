@@ -19,21 +19,28 @@ mongoClient.connect("mongodb://111-PC:27001/shemaCheck", function(err, db) {
 });
 
 
-var testStatus = false;
-var testInfo = "";
-var shema = {};
-var doc = [];
-var shObj ={};
-var allSh = {};
+// var testStatus = false;
+// var testInfo = "";
+// var shema = {};
+// var doc = [];
+// var shObj ={};
+// var allSh = {};
 
 
 var preSet = {};
 
 router.post('/', function(req, res, next) {
-    var data = req.body;
+    // var data =req.body;
+    console.log(req.body);
+    var data = {};
+    data.collections = [];
+    data.collections[data.collections.length]= req.body;
+    console.log(data);
+    res.send("its done");
     preSet = presetBuild(data);
     baseBuild(preSet);
     test();
+
 });
 
 router.get('/', function(req, res, next) {
@@ -50,7 +57,7 @@ function presetBuild(data) {
     var result = {};
     var shObj = {};
     for(var i = 0; localData.collections[i] !== undefined;i++){
-        shObj = {}
+        shObj = {};
         for(var j = 0;localData.collections[i].fields[j] !== undefined;j++) {
 
             shObj[localData.collections[i].fields[j].name] = localData.collections[i].fields[j].type;
@@ -92,9 +99,9 @@ function baseBuild(data) {
         }
     }
     return fields
-}
+};
 
 function test() {
 
-}
+};
 module.exports = router;
