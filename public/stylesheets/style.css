@@ -26,3 +26,40 @@ fieldset {
   border-radius: 5px;
   padding:1em;
 }
+.stat-bar{
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  background-color: #26c0ff;
+  text-align: center;
+  width: 100%;
+}
+.stat-table{
+  display: inline-block;
+  margin: 3px auto 0px auto;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 3px;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-weight:500;
+}
+.stat-table td{
+  border: 1px solid black;
+  width: 55px;
+
+}
+.stat-off{
+  margin: auto;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: red;
+}
+.stat-on{
+  margin: auto;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #43ff00;
+}

@@ -82,7 +82,25 @@
                 <!--</fieldset>-->
             <!--</div>-->
            <p><button type="button" ng-click="sendData(item)">Отправить данные</button></p>
+
         </form>
+        <div class="stat-bar" ng-model="$scope.status">
+            <table class="stat-table">
+                <tbody>
+                <tr>
+                    <td><div ng-class="status.shema ? 'stat-on':'stat-off'"></div></td>
+                    <td><div ng-class="status.base ? 'stat-on':'stat-off'"></div></td>
+                    <td><div ng-class="status.tests ? 'stat-on':'stat-off'"></div></td>
+                </tr>
+                <tr>
+                    <td>shema</td>
+                    <td>base</td>
+                    <td>tests</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </body>
 </html>

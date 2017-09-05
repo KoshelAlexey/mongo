@@ -2,6 +2,7 @@
 
 mongoApp.controller('parentController',
     function renderingForm($scope, userDbStructureService) {
+        $scope.status = {shema:false,base:false,tests:false};
         $scope.dbStructure = {
             collections: [
                 {
@@ -68,6 +69,10 @@ mongoApp.controller('parentController',
                 fields: fieldsArr
             };
             console.dir(fieldsArr);
-            userDbStructureService.sendUserStructure(dataToServer);
+            userDbStructureService.sendUserStructure(dataToServer)
+                .then(
+                    (data)=>{
+                        $scope.status = data.status;
+                    });
         };
 });
