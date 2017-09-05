@@ -2,6 +2,7 @@
 
 mongoApp.controller('parentController',
     function renderingForm($scope, userDbStructureService) {
+        $scope.status = {shema:false,base:false,tests:false};
 
         $scope.colRelationSelect = [
                 {name: 'Один к одному', value: 'oneToOne'},
@@ -77,6 +78,9 @@ mongoApp.controller('parentController',
 
         $scope.sendData  = function(collection){
             console.dir(collection);
-            userDbStructureService.sendUserStructure(collection);
+            userDbStructureService.sendUserStructure(collection).then(
+                (data)=>{
+                    $scope.status = data.status;
+                });
         };
 });
