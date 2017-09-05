@@ -9,6 +9,7 @@ function presetBuild(data) {
     var result = {};
     var shObject = {};
     var shIndex = {};
+
     for(var i = 0; localData.collections[i] !== undefined;i++){
         shObj = {};
         if(localData.collections[i].options){
@@ -24,6 +25,7 @@ function presetBuild(data) {
         shema = new mongoose.Schema(shObject,{versionKey:false});
         shema.index(shIndex);
         fields = shObject;
+
         result[localData.collections[i].name] = {"shema":shema, "fields":fields, "options":options};
     }
 

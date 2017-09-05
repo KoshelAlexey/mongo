@@ -27,11 +27,10 @@ var baseSet = {};
 var status = {shema:false,base:false,tests:false};
 
 router.post('/', function(req, res, next) {
-    // var data =req.body;
-    // console.log(req.body);
-    var data = {};
-    data.collections = [];
-    data.collections[data.collections.length]= req.body;
+    var data =req.body;
+    // var data = {};
+    // data.collections = [];
+    // data.collections[data.collections.length]= req.body;
     var p = new Promise(
         (resolve,reject)=>{
             resolve(presetBuild(data))
@@ -46,25 +45,32 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-    res.send(status)
+    if(req.query.build){
+        var p = new Promise(
+            (resolve,reject)=>{
+                resolve(baseBuild(preSet,db))
+            });
+        p.then(
+            (data)=>{
+                baseSet = data;
+                status.base = true;
+                console.log(status)
+                res.send({status:status})
+            })
+    }
+    if(req.query.tests){
+        var p = new Promise(
+            (resolve,reject)=>{
+                resolve(test(baseSet))
+            });
+        // p.then(
+        //     (data)=>{
+        //         baseSet = data;
+        //         status.tests = true;
+        //         res.send(status)
+        //     })
+    }
 });
 
-router.get('/build', function(req, res, next) {
-    var p = new Promise(
-        (resolve,reject)=>{
-            resolve(baseBuild(preSet,db))
-        });
-    p.then(
-        (data)=>{
-            baseSet = data;
-            status.base = true;
-            res.send(status)
-        })
-});
-
-router.get('/test', function(req, res, next) {
-    test(baseSet);
-    res.send(status)
-});
 
 module.exports = router;
