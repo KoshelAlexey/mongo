@@ -6,6 +6,7 @@ function baseBuild(data,base) {
     var preSet = data;
     var collections = [];
     var fields = [];
+
     for (var key in preSet) {
         collections[collections.length] = db.model(key, preSet[key].shema);
         fields[fields.length] = preSet[key].fields

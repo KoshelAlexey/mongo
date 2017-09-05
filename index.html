@@ -52,7 +52,11 @@
                 <button type="button" ng-click="removeField(item, field)">Удалить поле</button>
             </fieldset>
         </form>
-        <p><button type="button" ng-click="sendData(dbStructure)">Отправить данные</button></p>
+        <p>
+            <button type="button" ng-click="sendData(dbStructure)">Отправить данные</button>
+            <button type="button" ng-click="getBuild()">Построить базу</button>
+            <button type="button" ng-click="startTest()">Начать тестирование</button>
+        </p>
         <div class="stat-bar" ng-model="$scope.status">
             <table class="stat-table">
                 <tbody>

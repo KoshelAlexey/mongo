@@ -1,7 +1,7 @@
 'use strict';
 
 mongoApp.controller('parentController',
-    function renderingForm($scope, userDbStructureService) {
+    function renderingForm($scope, userDbStructureService, $http) {
         $scope.status = {shema:false,base:false,tests:false};
 
         $scope.colRelationSelect = [
@@ -77,10 +77,35 @@ mongoApp.controller('parentController',
         };
 
         $scope.sendData  = function(collection){
-            console.dir(collection);
             userDbStructureService.sendUserStructure(collection).then(
                 (data)=>{
                     $scope.status = data.status;
                 });
         };
+        $scope.getBuild = function () {
+            var req = {
+                method: 'GET',
+                url: 'http://localhost:5000/mongo/?build=true',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $http(req)
+                .then((resp)=>{$scope.status = resp.data.status}
+
+            );
+        };
+        $scope.startTest = function () {
+            var req = {
+                method: 'GET',
+                url: 'http://localhost:5000/mongo/?tests=true',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $http(req)
+                .then((resp)=>{$scope.status = resp.status}
+
+                );
+        }
 });
