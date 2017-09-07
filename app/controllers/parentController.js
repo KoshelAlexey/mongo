@@ -2,7 +2,8 @@
 
 mongoApp.controller('parentController',
     function renderingForm($scope, userDbStructureService, $http) {
-        $scope.status = {shema:false,base:false,tests:false};
+
+        $scope.status = {schema:false,base:false,tests:false};
 
         $scope.colRelationSelect = [
                 {name: 'Один к одному', value: 'oneToOne'},
@@ -104,7 +105,7 @@ mongoApp.controller('parentController',
                 }
             };
             $http(req)
-                .then((resp)=>{$scope.status = resp.status}
+                .then((resp)=>{$scope.status = resp.data.status}
 
                 );
         }

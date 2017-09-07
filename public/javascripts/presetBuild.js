@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 function presetBuild(data) {
     var localData = data;
-    var shema = {};
+    var schema = {};
     var fields = {};
     var options = {};
     var result = {};
@@ -11,7 +11,7 @@ function presetBuild(data) {
     var shIndex = {};
 
     for(var i = 0; localData.collections[i] !== undefined;i++){
-        shObj = {};
+        shObject = {};
         if(localData.collections[i].options){
             options = localData.collections[i].options
         }
@@ -22,11 +22,11 @@ function presetBuild(data) {
                 shIndex = {[localData.collections[i].fields[j].name]:1}
             }
         }
-        shema = new mongoose.Schema(shObject,{versionKey:false});
-        shema.index(shIndex);
+        schema = new mongoose.Schema(shObject,{versionKey:false});
+        schema.index(shIndex);
         fields = shObject;
 
-        result[localData.collections[i].name] = {"shema":shema, "fields":fields, "options":options};
+        result[localData.collections[i].name] = {"schema":schema, "fields":fields, "options":options};
     }
 
     return result

@@ -5,13 +5,15 @@ var mongoClient = require('mongodb').MongoClient;
 
 var mongoose = require('mongoose');
 
-var db = mongoose.createConnection('mongodb://111-PC:27001/shemaCheck');
+var fs = require('fs');
+
+var db = mongoose.createConnection('mongodb://111-PC:27001/schemaCheck');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-    console.log("connected!");
+    console.log("connected to db!");
 });
 
-mongoClient.connect("mongodb://111-PC:27001/shemaCheck", function(err, db) {
+mongoClient.connect("mongodb://111-PC:27001/schemaCheck", function(err, db) {
     if (err) {
         return console.log(err);
     }
@@ -21,27 +23,44 @@ mongoClient.connect("mongodb://111-PC:27001/shemaCheck", function(err, db) {
 
 var presetBuild = require("../public/javascripts/presetBuild.js");
 var baseBuild = require("../public/javascripts/baseBuild.js");
+var concept = require("../public/javascripts/firstConception.js");
+var relationsConception = require("../public/javascripts/relationsConception.js");
 
 var preSet = {};
 var baseSet = {};
-var status = {shema:false,base:false,tests:false};
+var status = {schema:false,base:false,tests:false};
 
 router.post('/', function(req, res, next) {
-    var data =req.body;
-    // var data = {};
-    // data.collections = [];
-    // data.collections[data.collections.length]= req.body;
-    var p = new Promise(
-        (resolve,reject)=>{
-            resolve(presetBuild(data))
-        });
+    var rawData =req.body;
+    fs.writeFile('./data/raw_data.txt',JSON.stringify(rawData), function (error) {
+        if(error) throw error;
+        var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
+    });
 
-    p.then(
-        (data)=>{
-            preSet = data;
-            status.shema = true;
-            res.send({message:"good",status:status});
-        })
+    var preSchema = relationsConception(rawData);
+    res.send(preSchema);
+    // var p = new Promise(
+    //     (resolve,reject)=>{
+    //         resolve(concept(rawData.collections))
+    //     });
+    //
+    // p.then(
+    //     (data)=>{
+    //         relationsConception(data,rawData.relations);
+    //         res.send(data);
+    //     })
+    // console.log(data)
+    // var p = new Promise(
+    //     (resolve,reject)=>{
+    //         resolve(presetBuild(data))
+    //     });
+    //
+    // p.then(
+    //     (data)=>{
+    //         preSet = data;
+    //         status.schema = true;
+    //         res.send({message:"good",status:status});
+    //     })
 });
 
 router.get('/', function(req, res, next) {
