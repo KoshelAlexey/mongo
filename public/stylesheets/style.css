@@ -28,7 +28,7 @@ fieldset {
   padding:1em;
 }
 .stat-bar{
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   left: 0;
   background-color: #26c0ff;

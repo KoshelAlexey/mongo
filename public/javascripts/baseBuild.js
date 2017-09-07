@@ -8,7 +8,7 @@ function baseBuild(data,base) {
     var fields = [];
 
     for (var key in preSet) {
-        collections[collections.length] = db.model(key, preSet[key].shema);
+        collections[collections.length] = db.model(key, preSet[key].schema);
         fields[fields.length] = preSet[key].fields
     }
 
@@ -26,6 +26,7 @@ function baseBuild(data,base) {
             }
         }
         collections[i].create(res)
+
     }
     return workData={collections:collections, fields:fields};
 };
