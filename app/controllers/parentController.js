@@ -15,7 +15,7 @@ mongoApp.controller('parentController',
         $scope.fieldTypesSelect = [
             {name: 'STRING', value: 'string'},
             {name: 'INTEGER', value: 'integer'},
-            {name: 'Связь с коллекциями', value: 'forRelation'}
+            {name: 'Связь с коллекциями', value: 'rel'}
         ];
 
         $scope.dbStructure = {
@@ -99,7 +99,7 @@ mongoApp.controller('parentController',
                 if(singleColl.name === collRel.collBegin) {
                     var relFieldsArr = [];
                     singleColl.fields.forEach(function(field) {
-                        if (field.type === 'forRelation') {
+                        if (field.type === 'rel') {
                             relFieldsArr.push(field);
                         }
                     });
