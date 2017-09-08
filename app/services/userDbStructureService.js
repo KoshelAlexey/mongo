@@ -11,7 +11,7 @@ mongoApp.service('userDbStructureService', function($http, $q) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data: JSON.stringify(collections, relations)
+                data: {collections, relations}
             };
             $http(req).then(
                 function resSuccess(response) {
