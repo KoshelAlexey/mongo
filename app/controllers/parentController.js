@@ -121,14 +121,22 @@ mongoApp.controller('parentController',
             })
         };
 
-        $scope.show = function(kuda, otkuda) {
-            console.dir(kuda);
-            console.dir(otkuda);
-        }
-
-        $scope.sendData  = function(collection){
-            console.dir(collection);
-            userDbStructureService.sendUserStructure(collection).then(
+        $scope.sendData  = function(collections, relations){
+            console.dir(collections);
+            var relArr = [];
+            relations.forEach(function(relItem) {
+                var rel = {};
+                rel.beginCollection = relItem.collBegin;
+                rel.beginField = relItem.fieldBegin;
+                rel.type = relItem.relationType;
+                rel.included = relItem.included;
+                rel.endCollection = relItem.collEnd;
+                rel.endField = relItem.fieldEnd;
+                rel.targeValue = '';
+                rel.range = '';
+                relArr.push(rel);
+            });
+            userDbStructureService.sendUserStructure(collections, relArr).then(
                 (data)=>{
                     $scope.status = data.status;
                 });

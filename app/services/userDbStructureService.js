@@ -2,20 +2,20 @@
 
 mongoApp.service('userDbStructureService', function($http, $q) {
     return {
-        sendUserStructure: function (dataToServer) {
+        sendUserStructure: function (collections, relations) {
             var deferred = $q.defer();
             var req = {
                 method: 'POST',
-                // url: 'http://localhost:5000/mongo/',
-                url: '',
+                url: 'http://localhost:5000/mongo/',
+                // url: '',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data: JSON.stringify(dataToServer)
+                data: JSON.stringify(collections, relations)
             };
             $http(req).then(
                 function resSuccess(response) {
-                    console.dir(response)
+                    console.dir(response);
                     deferred.resolve(response.data);
                 },
                 function resError(response) {
