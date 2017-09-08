@@ -13,7 +13,6 @@ mongoApp.service('userDbStructureService', function($http, $q) {
                 },
                 data: {collections, relations}
             };
-            console.dir(req.data);
             $http(req).then(
                 function resSuccess(response) {
                     console.dir(response);

@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link media="all" rel="stylesheet" href="public/stylesheets/style.css">
+
+    <script type="text/javascript">
+        mxBasePath = './node_modules/mxgraph/javascript/src';
+    </script>
+
+    <!-- Loads and initializes the library -->
+    <script type="text/javascript" src="./node_modules/mxgraph/javascript/src/js/mxClient.js"></script>
+
     <!--angular-->
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
@@ -15,6 +23,7 @@
     <script type="text/javascript" src="app/services/userDbStructureService.js"></script>
     <!--controllers-->
     <script type="text/javascript" src="app/controllers/parentController.js"></script>
+    <script type="text/javascript" src="app/controllers/viewController.js"></script>
  </head>
 <body ng-app="mongo-app">
     <div class="main-content" ng-controller="parentController">
@@ -120,22 +129,27 @@
             <button type="button" ng-click="getBuild()">Построить базу</button>
             <button type="button" ng-click="startTest()">Начать тестирование</button>
         </p>
-        <div class="stat-bar" ng-model="$scope.status">
-            <table class="stat-table">
-                <tbody>
-                <tr>
-                    <td><div ng-class="status.schema ? 'stat-on':'stat-off'"></div></td>
-                    <td><div ng-class="status.base ? 'stat-on':'stat-off'"></div></td>
-                    <td><div ng-class="status.tests ? 'stat-on':'stat-off'"></div></td>
-                </tr>
-                <tr>
-                    <td>schema</td>
-                    <td>base</td>
-                    <td>tests</td>
-                </tr>
-                </tbody>
-            </table>
-
+        <!--<div class="stat-bar" ng-model="$scope.status">-->
+            <!--<table class="stat-table">-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td><div ng-class="status.schema ? 'stat-on':'stat-off'"></div></td>-->
+                    <!--<td><div ng-class="status.base ? 'stat-on':'stat-off'"></div></td>-->
+                    <!--<td><div ng-class="status.tests ? 'stat-on':'stat-off'"></div></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>schema</td>-->
+                    <!--<td>base</td>-->
+                    <!--<td>tests</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+    </div>
+    <div ng-controller="viewController">
+        <button ng-click="viewShow.show = !viewShow.show">Show View Area</button>
+        <button ng-click="main()">refresh</button>
+        <div id="container" ng-show="viewShow.show"></div>
     </div>
 </body>
 </html>
