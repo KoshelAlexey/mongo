@@ -29,6 +29,7 @@ var relationsConception = require("../public/javascripts/relationsConception.js"
 var preSet = {};
 var baseSet = {};
 var status = {schema:false,base:false,tests:false};
+var preSchema = {}
 
 router.post('/', function(req, res, next) {
     var rawData =req.body;
@@ -37,8 +38,8 @@ router.post('/', function(req, res, next) {
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
 
-    var preSchema = relationsConception(rawData);
-    res.send(preSchema);
+    preSchema = relationsConception(rawData);
+    res.send("ggggg");
     // var p = new Promise(
     //     (resolve,reject)=>{
     //         resolve(concept(rawData.collections))
@@ -64,24 +65,25 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-    if(req.query.build){
-        var p = new Promise(
-            (resolve,reject)=>{
-                resolve(baseBuild(preSet,db))
-            });
-        p.then(
-            (data)=>{
-                baseSet = data;
-                status.base = true;
-                console.log(status)
-                res.send({status:status})
-            })
-    }
-    if(req.query.tests){
-        var p = new Promise(
-            (resolve,reject)=>{
-                resolve(test(baseSet))
-            });
+    res.send(preSchema)
+    // if(req.query.build){
+    //     var p = new Promise(
+    //         (resolve,reject)=>{
+    //             resolve(baseBuild(preSet,db))
+    //         });
+    //     p.then(
+    //         (data)=>{
+    //             baseSet = data;
+    //             status.base = true;
+    //             console.log(status)
+    //             res.send({status:status})
+    //         })
+    // }
+    // if(req.query.tests){
+    //     var p = new Promise(
+    //         (resolve,reject)=>{
+    //             resolve(test(baseSet))
+    //         });
         // p.then(
         //     (data)=>{
         //         baseSet = data;
@@ -89,7 +91,7 @@ router.get('/', function(req, res, next) {
         //         res.send(status)
         //     })
     }
-});
+);
 
 
 module.exports = router;

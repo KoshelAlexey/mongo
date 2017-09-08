@@ -122,7 +122,7 @@ mongoApp.controller('parentController',
         };
 
         $scope.sendData  = function(collections, relations){
-            console.dir(collections);
+            // console.dir(collections);
             var relArr = [];
             relations.forEach(function(relItem) {
                 var rel = {};

@@ -24,6 +24,29 @@ mongoApp.service('userDbStructureService', function($http, $q) {
                 }
             );
             return deferred.promise;
+        },
+
+        getStructure: function() {
+            var deferred = $q.defer();
+            var req = {
+                method: 'GET',
+                url: 'http://localhost:5000/mongo/',
+                // url: '',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $http(req).then(
+                function resSuccess(response) {
+                    console.dir(response);
+                    deferred.resolve(response.data);
+                },
+                function resError(response) {
+
+                    deferred.reject(response.status);
+                }
+            );
+            return deferred.promise;
         }
     }
 });
