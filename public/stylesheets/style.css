@@ -8,15 +8,20 @@ a {
 }
 fieldset {
   margin:1em 0;
-  border:none;
+  /*border:none;*/
 }
-.bdentity-wrapper {
+.wrapper {
   padding:1em;
   margin-bottom:1em;
   border: 1px solid #000000;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+.wrapper h2 {
+  /*display:inline-block;*/
+  /*min-width: 50%;*/
+  margin: 0 0.25em;
 }
 .subcollection {
   margin-left:50px;
@@ -28,7 +33,7 @@ fieldset {
   padding:1em;
 }
 .stat-bar{
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   left: 0;
   background-color: #26c0ff;
@@ -63,4 +68,20 @@ fieldset {
   height: 25px;
   border-radius: 50%;
   background-color: #43ff00;
+}
+.relations, .relations th, .relations td {
+  border:1px solid #000000;
+  border-collapse:collapse;
+}
+.relations {
+  width:100%;
+}
+.relations th, .relations td {
+  width:16%;
+  padding:0.5em 0.25em;
+  text-align: center;
+}
+.relations-button {
+  display: block;
+  margin: 1em auto;
 }

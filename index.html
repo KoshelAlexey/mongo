@@ -19,22 +19,9 @@
 <body ng-app="mongo-app">
     <div class="main-content" ng-controller="parentController">
         <p><button type="button" ng-click="addCollection(dbStructure)">Добавить коллекцию</button></p>
-        <form class="bdentity-wrapper" ng-repeat="item in dbStructure.collections">
+        <form class="wrapper" ng-repeat="item in dbStructure.collections">
             <p>
                 <label><span>Имя коллекции: </span><input type="text" ng-model="item.name"></label>
-            </p>
-            <hr>
-            <p>Отношения к другим коллекциям:</p>
-            <p><button type="button" ng-click="addRelation(item)">Добавить отношения</button></p>
-            <p ng-repeat="relation in item.relations">
-                <span>Коллекция: </span>
-                <select ng-model="relation.reliedTo">
-                    <option ng-repeat="item in dbStructure.collections" value="{{item.name}}">{{item.name}}</option>
-                </select>
-                <span>Тип отношения: </span>
-                <select ng-model="relation.relationType">
-                    <option ng-repeat="type in colRelationSelect" value="{{type.value}}">{{type.name}}</option>
-                </select>
             </p>
             <hr>
             <p>
@@ -50,7 +37,83 @@
                     </select>
                 </label>
                 <button type="button" ng-click="removeField(item, field)">Удалить поле</button>
+                <p>Диапазон значений (размер) поля<br>
+                <p>
+                <label>
+                    <span>Предполагаемое: </span>
+                    <input type="text" ng-model="field.expValue" ng-Change="calcRange(field)">
+                </label>
+                <label>
+                    <span>Минимум: </span>
+                    <input type="text" ng-model="field.minValue" disabled>
+                </label>
+                <label>
+                    <span>Максимум: </span>
+                    <input type="text" ng-model="field.maxValue" disabled >
+                </label>
+                </p>
             </fieldset>
+        </form>
+        <form class="wrapper">
+            <h2>Отношения</h2>
+            <button type="button" class="relations-button" ng-click="addRelation(collRelations)"
+                ng-disabled="dbStructure.collections.length < 2">Добавить отношение</button>
+            <table class="relations">
+                <thead>
+                <tr>
+                    <th>Коллекция:</th>
+                    <th>Поле коллекции:</th>
+                    <th>Тип отношения:</th>
+                    <th>Уникальное</th>
+                    <th>Коллекция:</th>
+                    <th>Поле коллекции:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="relation in collRelations">
+                    <td>
+                        <select ng-model="relation.collBegin" ng-change="loadFieldsBegin(dbStructure.collections, relation)">
+                            <option ng-repeat="collectionBegin in dbStructure.collections" value="{{collectionBegin.name}}">
+                                {{collectionBegin.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="relation.fieldBegin">
+                            <option ng-repeat="field in relation.collBeginFields" value="{{field.name}}">
+                                {{field.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="relation.relationType">
+                            <option ng-repeat="relType in colRelationSelect" value="{{relType.value}}">
+                                {{relType.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox" ng-model="relation.included">
+                    </td>
+                    <td>
+                        <select ng-model="relation.collEnd" ng-change="loadFieldsEnd(dbStructure.collections, relation)">
+                            <option ng-repeat="collectionEnd in dbStructure.collections" value="{{collectionEnd.name}}"
+                                    ng-show="collectionEnd.name !== relation.collBegin">
+                                {{collectionEnd.name}}
+                            </option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <select ng-model="relation.fieldTo">
+                            <option ng-repeat="field in relation.collEndFields" value="{{field.name}}">
+                                {{field.name}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </form>
         <p>
             <button type="button" ng-click="sendData(dbStructure)">Отправить данные</button>
