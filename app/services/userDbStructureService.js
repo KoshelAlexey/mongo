@@ -6,7 +6,8 @@ mongoApp.service('userDbStructureService', function($http, $q) {
             var deferred = $q.defer();
             var req = {
                 method: 'POST',
-                url: 'http://localhost:5000/mongo/',
+                // url: 'http://localhost:5000/mongo/',
+                url: '',
                 headers: {
                     'Content-Type': 'application/json'
                 },

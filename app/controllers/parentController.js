@@ -5,7 +5,7 @@ mongoApp.controller('parentController',
 
         $scope.status = {schema:false,base:false,tests:false};
 
-        $scope.colRelationSelect = [
+            $scope.colRelationSelect = [
                 {name: 'Один к одному', value: 'oneToOne'},
                 {name: 'Один ко многим', value: 'oneToMany'},
                 {name: 'Многие к одному', value: 'manyToOne'},
@@ -14,9 +14,8 @@ mongoApp.controller('parentController',
 
         $scope.fieldTypesSelect = [
             {name: 'STRING', value: 'string'},
-            {name: 'NUMBER', value: 'number'},
-            {name: 'INTEGER', value: 'int'},
-            {name: 'DATE', value: 'date'}
+            {name: 'INTEGER', value: 'integer'},
+            {name: 'Связь с коллекциями', value: 'forRelation'}
         ];
 
         $scope.dbStructure = {
@@ -27,14 +26,18 @@ mongoApp.controller('parentController',
                         {
                             required: true,
                             searchable: false,
-                            name: '',
-                            type:''
+                            name:'',
+                            type:'',
+                            expValue:'',
+                            minValue:'',
+                            maxValue:''
                         }
                     ],
-                    relations:[]
                 }
             ]
         };
+
+        $scope.collRelations = [];
 
         $scope.addCollection = function(dbStructure) {
             var newCollection = {
@@ -43,21 +46,29 @@ mongoApp.controller('parentController',
                     {
                         required: true,
                         searchable: false,
-                        name: '',
-                        type:''
+                        name:'',
+                        type:'',
+                        expValue:'',
+                        minValue:'',
+                        maxValue:''
                     }
                 ],
-                relations:[]
             };
             dbStructure.collections.push(newCollection);
         };
 
-        $scope.addRelation = function(collection) {
+        $scope.addRelation = function(collRelations) {
             var newRelation = {
-                reliedTo:'',
-                relationType:''
+                collBegin:'',
+                collBeginFields:[],
+                fieldBegin:'',
+                relationType:'',
+                included:false,
+                collEnd:'',
+                collEndFields:[],
+                fieldEnd:''
             };
-            collection.relations.push(newRelation);
+            collRelations.push(newRelation);
         };
 
         $scope.addField = function(collection) {
@@ -77,7 +88,46 @@ mongoApp.controller('parentController',
             }
         };
 
+        $scope.calcRange = function(data) {
+            var value = Number(data.expValue);
+            data.minValue = value - value / 2;
+            data.maxValue = value + value / 2;
+        };
+
+        $scope.loadFieldsBegin = function(collections, collRel) {
+            collections.forEach(function (singleColl) {
+                if(singleColl.name === collRel.collBegin) {
+                    var relFieldsArr = [];
+                    singleColl.fields.forEach(function(field) {
+                        if (field.type === 'forRelation') {
+                            relFieldsArr.push(field);
+                        }
+                    });
+                    if(relFieldsArr.length > 0) {
+                        collRel.collBeginFields = relFieldsArr;
+                    } else {
+                        collRel.collBeginFields = [];
+                    }
+                    collRel.collEnd = '';
+                }
+            })
+        };
+
+        $scope.loadFieldsEnd = function(collections, collRel) {
+            collections.forEach(function (singleColl) {
+                if(singleColl.name === collRel.collEnd) {
+                    collRel.collEndFields = singleColl.fields;
+                }
+            })
+        };
+
+        $scope.show = function(kuda, otkuda) {
+            console.dir(kuda);
+            console.dir(otkuda);
+        }
+
         $scope.sendData  = function(collection){
+            console.dir(collection);
             userDbStructureService.sendUserStructure(collection).then(
                 (data)=>{
                     $scope.status = data.status;
