@@ -29,7 +29,7 @@ var relationsConception = require("../public/javascripts/relationsConception.js"
 var preSet = {};
 var baseSet = {};
 var status = {schema:false,base:false,tests:false};
-var preSchema = {}
+var preSchema = {};
 
 router.post('/', function(req, res, next) {
     var rawData =req.body;
@@ -38,17 +38,14 @@ router.post('/', function(req, res, next) {
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
 
-    // preSchema = relationsConception(rawData);
-    // res.send("ggggg");
     var p = new Promise(
         (resolve,reject)=>{
             resolve(relationsConception(rawData))
         });
-
     p.then(
         (data)=>{
-            // relationsConception(data,rawData.relations);
-            res.send(data);
+            preSchema = data;
+            res.send("done");
         })
     // console.log(data)
     // var p = new Promise(
