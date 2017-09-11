@@ -38,18 +38,18 @@ router.post('/', function(req, res, next) {
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
 
-    preSchema = relationsConception(rawData);
-    res.send("ggggg");
-    // var p = new Promise(
-    //     (resolve,reject)=>{
-    //         resolve(concept(rawData.collections))
-    //     });
-    //
-    // p.then(
-    //     (data)=>{
-    //         relationsConception(data,rawData.relations);
-    //         res.send(data);
-    //     })
+    // preSchema = relationsConception(rawData);
+    // res.send("ggggg");
+    var p = new Promise(
+        (resolve,reject)=>{
+            resolve(relationsConception(rawData))
+        });
+
+    p.then(
+        (data)=>{
+            // relationsConception(data,rawData.relations);
+            res.send(data);
+        })
     // console.log(data)
     // var p = new Promise(
     //     (resolve,reject)=>{

@@ -81,55 +81,71 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
 
 
                 try {
+                    var graphj = []
                     data.forEach(function (item, i) {
-                        // console.dir(item);
+                        var thisGraph = [];
+                        thisGraph[0] = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column')
 
+                        console.dir(item);
+                        if(item.link){
+
+                        }
+                        else{
+                            thisGraph[1] = graph.insertVertex(thisGraph[0], null, item.col, 0, 0, 100, 30);
+                            thisGraph[1].collapsed = true;
+                            for(var key in item){
+                                if(key !== "col"){
+                                    thisGraph[thisGraph.length] = graph.insertVertex(thisGraph[1], null, key, 0, 0, 80, 30);
+                                }
+                            }
+                        }
+                        graphj[i]=thisGraph
                     })
 
-                    var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
-
-                    var v1 = graph.insertVertex(col1, null, '1', 0, 0, 100, 30);
-                    v1.collapsed = true;
-
-                    var v11 = graph.insertVertex(v1, null, '1.1', 0, 0, 80, 30);
-                    v11.collapsed = true;
-
-                    var v111 = graph.insertVertex(v11, null, '1.1.1', 0, 0, 60, 30);
-                    var v112 = graph.insertVertex(v11, null, '1.1.2', 0, 0, 60, 30);
-
-                    var v12 = graph.insertVertex(v1, null, '1.2', 0, 0, 80, 30);
-
-                    var col2 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
-
-                    var v2 = graph.insertVertex(col2, null, '2', 0, 0, 100, 30);
-                    v2.collapsed = true;
-
-                    var v21 = graph.insertVertex(v2, null, '2.1', 0, 0, 80, 30);
-                    v21.collapsed = true;
-
-                    var v211 = graph.insertVertex(v21, null, '2.1.1', 0, 0, 60, 30);
-                    var v212 = graph.insertVertex(v21, null, '2.1.2', 0, 0, 60, 30);
-
-                    var v22 = graph.insertVertex(v2, null, '2.2', 0, 0, 80, 30);
-
-                    var v3 = graph.insertVertex(col2, null, '3', 0, 0, 100, 30);
-                    v3.collapsed = true;
-
-                    var v31 = graph.insertVertex(v3, null, '3.1', 0, 0, 80, 30);
-                    v31.collapsed = true;
-
-                    var v311 = graph.insertVertex(v31, null, '3.1.1', 0, 0, 60, 30);
-                    var v312 = graph.insertVertex(v31, null, '3.1.2', 0, 0, 60, 30);
-
-                    var v32 = graph.insertVertex(v3, null, '3.2', 0, 0, 80, 30);
-
-                    graph.insertEdge(parent, null, '', v111, v211);
-                    graph.insertEdge(parent, null, '', v112, v212);
-                    graph.insertEdge(parent, null, '', v112, v22);
-
-                    graph.insertEdge(parent, null, '', v12, v311);
-                    graph.insertEdge(parent, null, '', v12, v312);
-                    graph.insertEdge(parent, null, '', v12, v32);
+                    // var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
+                    //
+                    // var v1 = graph.insertVertex(col1, null, '1', 0, 0, 100, 30);
+                    // v1.collapsed = true;
+                    //
+                    // var v11 = graph.insertVertex(v1, null, '1.1', 0, 0, 80, 30);
+                    // v11.collapsed = true;
+                    //
+                    // var v111 = graph.insertVertex(v11, null, '1.1.1', 0, 0, 60, 30);
+                    // var v112 = graph.insertVertex(v11, null, '1.1.2', 0, 0, 60, 30);
+                    //
+                    // var v12 = graph.insertVertex(v1, null, '1.2', 0, 0, 80, 30);
+                    //
+                    // var col2 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
+                    //
+                    // var v2 = graph.insertVertex(col2, null, '2', 0, 0, 100, 30);
+                    // v2.collapsed = true;
+                    //
+                    // var v21 = graph.insertVertex(v2, null, '2.1', 0, 0, 80, 30);
+                    // v21.collapsed = true;
+                    //
+                    // var v211 = graph.insertVertex(v21, null, '2.1.1', 0, 0, 60, 30);
+                    // var v212 = graph.insertVertex(v21, null, '2.1.2', 0, 0, 60, 30);
+                    //
+                    // var v22 = graph.insertVertex(v2, null, '2.2', 0, 0, 80, 30);
+                    //
+                    // var v3 = graph.insertVertex(col2, null, '3', 0, 0, 100, 30);
+                    // v3.collapsed = true;
+                    //
+                    // var v31 = graph.insertVertex(v3, null, '3.1', 0, 0, 80, 30);
+                    // v31.collapsed = true;
+                    //
+                    // var v311 = graph.insertVertex(v31, null, '3.1.1', 0, 0, 60, 30);
+                    // var v312 = graph.insertVertex(v31, null, '3.1.2', 0, 0, 60, 30);
+                    //
+                    // var v32 = graph.insertVertex(v3, null, '3.2', 0, 0, 80, 30);
+                    //
+                    // graph.insertEdge(parent, null, '', v111, v211);
+                    // graph.insertEdge(parent, null, '', v112, v212);
+                    // graph.insertEdge(parent, null, '', v112, v22);
+                    //
+                    // graph.insertEdge(parent, null, '', v12, v311);
+                    // graph.insertEdge(parent, null, '', v12, v312);
+                    // graph.insertEdge(parent, null, '', v12, v32);
                 }
                 finally {
                     // Updates the display
