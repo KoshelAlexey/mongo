@@ -124,6 +124,19 @@ mongoApp.controller('parentController',
         $scope.sendData  = function(collections, relations){
             // console.dir(collections);
             var relArr = [];
+            collections.forEach(function(colItem) {
+                colItem.fields.push(
+                    {
+                        required: true,
+                        searchable: true,
+                        name:'id',
+                        type:colItem.name,
+                        expValue:'',
+                        minValue:'',
+                        maxValue:''
+                    }
+                );
+            });
             relations.forEach(function(relItem) {
                 var rel = {};
                 rel.beginCollection = relItem.collBegin;
