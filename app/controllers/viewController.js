@@ -81,26 +81,29 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
 
 
                 try {
-                    var graphj = []
+                    var wholeArr = [];
                     data.forEach(function (item, i) {
-                        var thisGraph = [];
-                        thisGraph[0] = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column')
-
-                        console.dir(item);
-                        if(item.link){
-
-                        }
-                        else{
-                            thisGraph[1] = graph.insertVertex(thisGraph[0], null, item.col, 0, 0, 100, 30);
-                            thisGraph[1].collapsed = true;
-                            for(var key in item){
-                                if(key !== "col"){
-                                    thisGraph[thisGraph.length] = graph.insertVertex(thisGraph[1], null, key, 0, 0, 80, 30);
-                                }
+                        var subArr = [];
+                        subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
+                        for (var prop in item) {
+                            if (prop !== 'col') {
+                                subArr.push(graph.insertVertex(subArr[0], null, prop, 0, 0, 100, 30))
                             }
                         }
-                        graphj[i]=thisGraph
-                    })
+                        wholeArr[i] = subArr;
+                        console.dir(subArr);
+                    });
+                    // return wholeArr;
+                    console.dir(wholeArr);
+                    // var wholeArr = [];
+                    // for (var i = 0; i < data.length; i++) {
+                    //     wholeArr[i] = graph.insertVertex(parent, null, data[i].col, 0, 0, 120, 0, 'column');
+                    //     for (var prop in data[i]) {
+                    //         if (prop !== col) {
+                    //
+                    //         }
+                    //     }
+                    // }
 
                     // var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
                     //
