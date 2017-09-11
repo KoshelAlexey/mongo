@@ -1,5 +1,6 @@
 var BSON = require('BSON');
 var bson = new BSON();
+var recDepth = 0;
 
 function relationsConception(data) {
     var collections = data.collections;
@@ -22,7 +23,6 @@ function relationsConception(data) {
         instance.col = collections[i].name;
         res[i] = instance;
     }
-    console.log(res)
     return res
 }
 
@@ -31,6 +31,7 @@ function embdedContent(field,col,rel,colName) {
     var field = field;
     var allCol = col;
     var allRel = rel;
+
 
     var res = {embded:{},link:{}};
     var thisRel = (function () {
@@ -52,12 +53,18 @@ function embdedContent(field,col,rel,colName) {
     switch (thisRel.type) {
         case 'oneToOne': {
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
-
                 if(endCol.fields[f].type === "rel") {
-                    res.embded[endCol.fields[f].name] = embdedContent(endCol.fields[f], allCol, allRel, endCol.name);
+                    if (recDepth < 50){
+                        recDepth ++;
+                        res.embded[endCol.fields[f].name] = embdedContent(endCol.fields[f], allCol, allRel, endCol.name);
+                    }
+                    else{
+                        res.embded = "to deep recursion"
+                    }
                     res.link[endCol.fields[f].name] = linkContent(endCol.fields[f], allCol, allRel, endCol.name);
                 }
                 else{
+                    recDepth = 0;
                     res.embded[endCol.fields[f].name] = endCol.fields[f].type;
                     res.link[endCol.fields[f].name] = endCol.fields[f].type;
                 }
