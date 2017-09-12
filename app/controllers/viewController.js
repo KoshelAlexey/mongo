@@ -87,7 +87,21 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
                         for (var prop in item) {
                             if (prop !== 'col') {
-                                subArr.push(graph.insertVertex(subArr[0], null, prop, 0, 0, 100, 30))
+                                function emb(fieldObj, fieldProp, arr) {
+                                    console.log(fieldProp);
+                                    if (fieldProp === 'embded') {
+                                        for (var key in fieldProp[fieldProp]) {
+                                            var ttt = fieldProp[fieldProp];
+                                            if (typeof(ttt[key]) === 'object') {
+                                                var subArr = [];
+                                                emb(item, prop, subArr);
+                                            } else {
+                                                arr.push(graph.insertVertex(arr[0], null, key, 0, 0, 100, 30))
+                                            }
+                                        }
+                                    }
+                                }
+                                emb(item, prop, subArr);
                             }
                         }
                         wholeArr[i] = subArr;

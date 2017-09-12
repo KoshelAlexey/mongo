@@ -14,7 +14,7 @@ mongoApp.controller('parentController',
 
         $scope.fieldTypesSelect = [
             {name: 'STRING', value: 'string'},
-            {name: 'INTEGER', value: 'integer'},
+            {name: 'NUMBER', value: 'number'},
             {name: 'Связь с коллекциями', value: 'rel'}
         ];
 
@@ -122,20 +122,27 @@ mongoApp.controller('parentController',
         };
 
         $scope.sendData  = function(collections, relations){
-            // console.dir(collections);
             var relArr = [];
             collections.forEach(function(colItem) {
-                colItem.fields.push(
-                    {
-                        required: true,
-                        searchable: true,
-                        name:'id',
-                        type:colItem.name,
-                        expValue:'',
-                        minValue:'',
-                        maxValue:''
+                var idCheck = false;
+                colItem.fields.forEach(function(field) {
+                    if (field.name === 'id') {
+                        idCheck = true;
                     }
-                );
+                });
+                if (!idCheck) {
+                       colItem.fields.push(
+                            {
+                                required: true,
+                                searchable: true,
+                                name: 'id',
+                                type: colItem.name,
+                                expValue: '',
+                                minValue: '',
+                                maxValue: ''
+                            }
+                       );
+                }
             });
             relations.forEach(function(relItem) {
                 var rel = {};
