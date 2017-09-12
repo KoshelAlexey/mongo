@@ -44,7 +44,7 @@ router.post('/', function(req, res, next) {
         });
     p.then(
         (data)=>{
-            // preSchema = data;
+            preSchema = data;
 
             res.send(data);
         })

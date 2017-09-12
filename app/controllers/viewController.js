@@ -87,16 +87,19 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
                         for (var prop in item) {
                             if (prop !== 'col') {
-                                function emb(fieldObj, fieldProp, arr) {
-                                    console.log(fieldProp);
-                                    if (fieldProp === 'embded') {
-                                        for (var key in fieldProp[fieldProp]) {
-                                            var ttt = fieldProp[fieldProp];
-                                            if (typeof(ttt[key]) === 'object') {
+                                function emb(obj, propName, parentArr) {
+                                    // console.log(parentArr);
+                                    if (propName !== 'link') {
+                                        // console.log('hi');
+                                        for (var key in obj[propName]) {
+                                            var ttt = obj[propName];
+                                            console.dir(key + ' ' + ttt[key].type);
+                                            if (ttt[key].type === 'undefined') {
                                                 var subArr = [];
-                                                emb(item, prop, subArr);
+                                                subArr[0] = graph.insertVertex(parentArr[0], null, key, 0, 0, 120, 50);
+                                                emb(ttt[key], key, subArr);
                                             } else {
-                                                arr.push(graph.insertVertex(arr[0], null, key, 0, 0, 100, 30))
+                                                parentArr.push(graph.insertVertex(parentArr[0], null, key, 0, 0, 100, 30))
                                             }
                                         }
                                     }
