@@ -15,7 +15,7 @@ mongoApp.service('userDbStructureService', function($http, $q) {
             };
             $http(req).then(
                 function resSuccess(response) {
-                    console.dir(response);
+                    console.dir(response.data);
                     deferred.resolve(response.data);
                 },
                 function resError(response) {
