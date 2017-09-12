@@ -88,8 +88,9 @@ fieldset {
 #container{
   position:relative;
   overflow:hidden;
-  width:321px;
-  height:241px;
+  width:100%;
+  height:auto;
   background:url('../images/grid.gif');
-  cursor:default;"
+  cursor:default;
+  overflow-x:scroll;
 }
