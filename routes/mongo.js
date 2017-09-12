@@ -7,19 +7,19 @@ var mongoose = require('mongoose');
 
 var fs = require('fs');
 
-var db = mongoose.createConnection('mongodb://111-PC:27001/schemaCheck');
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    console.log("connected to db!");
-});
-
-mongoClient.connect("mongodb://111-PC:27001/schemaCheck", function(err, db) {
-    if (err) {
-        return console.log(err);
-    }
-    db.dropDatabase();
-    // db.close();
-});
+// var db = mongoose.createConnection('mongodb://111-PC:27001/schemaCheck');
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//     console.log("connected to db!");
+// });
+//
+// mongoClient.connect("mongodb://111-PC:27001/schemaCheck", function(err, db) {
+//     if (err) {
+//         return console.log(err);
+//     }
+//     db.dropDatabase();
+//     // db.close();
+// });
 
 var presetBuild = require("../public/javascripts/presetBuild.js");
 var baseBuild = require("../public/javascripts/baseBuild.js");
@@ -37,15 +37,16 @@ router.post('/', function(req, res, next) {
         if(error) throw error;
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
-
+    concept(rawData);
     var p = new Promise(
         (resolve,reject)=>{
             resolve(relationsConception(rawData))
         });
     p.then(
         (data)=>{
-            preSchema = data;
-            res.send("done");
+            // preSchema = data;
+
+            res.send(data);
         })
     // console.log(data)
     // var p = new Promise(

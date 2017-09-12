@@ -1,5 +1,3 @@
-var BSON = require('BSON');
-var bson = new BSON();
 var recDepth = 0;
 
 function relationsConception(data) {
@@ -7,16 +5,16 @@ function relationsConception(data) {
     var relations = data.relations;
     var res = [];
     for(var i = 0; collections[i] !== undefined;i++) {
-        var instance = {col: "",embded:{},link:{}};
+        var instance = {col: "",embed:{},link:{}};
         for(var j = 0; collections[i].fields[j]!== undefined;j++){
             if(collections[i].fields[j].type === "rel"){
 
-                instance.embded[collections[i].fields[j].name] = embdedContent(collections[i].fields[j],collections,relations,collections[i].name);
+                instance.embed[collections[i].fields[j].name] = embedContent(collections[i].fields[j],collections,relations,collections[i].name);
                 instance.link[collections[i].fields[j].name] = linkContent(collections[i].fields[j],collections,relations,collections[i].name);
             }
             else{
-                instance.embded[collections[i].fields[j].name] = collections[i].fields[j].type;
-                instance.link[collections[i].fields[j].name] = collections[i].fields[j].type;
+                instance.embed[collections[i].fields[j].name] = collections[i].fields[j];
+                instance.link[collections[i].fields[j].name] = collections[i].fields[j];
             }
         }
         instance = objEqals(instance);
@@ -26,14 +24,14 @@ function relationsConception(data) {
     return res
 }
 
-function embdedContent(field,col,rel,colName) {
+function embedContent(field,col,rel,colName) {
     var colName = colName;
     var field = field;
     var allCol = col;
     var allRel = rel;
 
 
-    var res = {embded:{},link:{}};
+    var res = {embed:{},link:{}};
     var thisRel = (function () {
         for(var r = 0; allRel[r] !== undefined;r++) {
             if (field.name === allRel[r].beginField
@@ -56,17 +54,17 @@ function embdedContent(field,col,rel,colName) {
                 if(endCol.fields[f].type === "rel") {
                     if (recDepth < 50){
                         recDepth ++;
-                        res.embded[endCol.fields[f].name] = embdedContent(endCol.fields[f], allCol, allRel, endCol.name);
+                        res.embed[endCol.fields[f].name] = embedContent(endCol.fields[f], allCol, allRel, endCol.name);
                     }
                     else{
-                        res.embded = "to deep recursion"
+                        res.embed = "to deep recursion"
                     }
                     res.link[endCol.fields[f].name] = linkContent(endCol.fields[f], allCol, allRel, endCol.name);
                 }
                 else{
                     recDepth = 0;
-                    res.embded[endCol.fields[f].name] = endCol.fields[f].type;
-                    res.link[endCol.fields[f].name] = endCol.fields[f].type;
+                    res.embed[endCol.fields[f].name] = endCol.fields[f];
+                    res.link[endCol.fields[f].name] = endCol.fields[f];
                 }
             }
             res = objEqals(res);
@@ -91,7 +89,7 @@ function linkContent(field,col,rel,colName) {
     var allCol = col;
     var allRel = rel;
 
-    var res = {embded:{},link:{}};
+    var res = {embed:{},link:{}};
     var thisRel = (function () {
         for(var r = 0; allRel[r] !== undefined;r++) {
             if (field.name === allRel[r].beginField
@@ -112,7 +110,7 @@ function linkContent(field,col,rel,colName) {
         case 'oneToOne': {
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
                 if(endCol.fields[f].name === "id") {
-                    res = {id: endCol.fields[f].type}
+                    res = {id: endCol.fields[f]}
                 }
             }
             console.log(res);
@@ -132,7 +130,7 @@ function linkContent(field,col,rel,colName) {
 }
 
 function objEqals(obj) {
-    var firstObj = obj.embded;
+    var firstObj = obj.embed;
     var secondObj = obj.link;
     var s1 = JSON.stringify(firstObj);
     var s2 = JSON.stringify(secondObj);
