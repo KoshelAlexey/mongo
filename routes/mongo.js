@@ -37,7 +37,7 @@ router.post('/', function(req, res, next) {
         if(error) throw error;
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
-    concept(rawData);
+    // concept(rawData);
     var p = new Promise(
         (resolve,reject)=>{
             resolve(relationsConception(rawData))
