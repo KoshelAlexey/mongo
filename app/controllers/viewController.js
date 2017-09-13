@@ -100,9 +100,9 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                             // findLevels(item);
                             // console.log(counter);
                             var subArr = [];
-                            subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
+                            subArr[0] = graph.insertVertex(parent, null, item.collectionName, 0, 0, 120, 50);
                             for (var prop in item) {
-                                if (prop !== 'col') {
+                                if (prop !== 'collectionName') {
                                     function emb(obj, propName, parentArr, contWidth) {
                                         var innerWidth = contWidth - 20;
                                         var propValue = obj[propName];
