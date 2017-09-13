@@ -64,7 +64,9 @@ router.post('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     res.send(preSchema)
-    // if(req.query.build){
+    // fs.writeFile('./data/back_arr.txt',JSON.stringify(preSchema))
+
+        // if(req.query.build){
     //     var p = new Promise(
     //         (resolve,reject)=>{
     //             resolve(baseBuild(preSet,db))

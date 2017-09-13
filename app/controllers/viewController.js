@@ -77,56 +77,66 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
         graph.getModel().beginUpdate();
 
         userDbStructureService.getStructure().then((data) => {
+            // var data = [{"f":{"s":{"t":{"fr":{"ft":{"sx":{"sv":{"et":{"required":true,"searchable":false,"name":"et","type":"string","expValue":"","minValue":"","maxValue":""},"id":{"required":true,"searchable":true,"name":"id","type":"et","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"sv","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"sx","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"ft","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"fr","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"t","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"s","expValue":"","minValue":"","maxValue":""}},"id":{"required":true,"searchable":true,"name":"id","type":"ff","expValue":"","minValue":"","maxValue":""},"collectionName":"ff"}]
+            // var data = [{"f1":{"s1":{"t1":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t2":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t3":{"required":false,"searchable":false,"name":"t3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"third","expValue":"","minValue":"","maxValue":""}},"s2":{"t1":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t2":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t3":{"required":false,"searchable":false,"name":"t3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"third","expValue":"","minValue":"","maxValue":""}},"s3":{"required":false,"searchable":false,"name":"s3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"second","expValue":"","minValue":"","maxValue":""}},"f2":{"s1":{"t1":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t2":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t3":{"required":false,"searchable":false,"name":"t3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"third","expValue":"","minValue":"","maxValue":""}},"s2":{"t1":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t2":{"fr1":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr2":{"ft1":{"required":true,"searchable":false,"name":"ft1","type":"string","expValue":"","minValue":"","maxValue":""},"ft2":{"required":false,"searchable":false,"name":"ft2","type":"number"},"ft3":{"required":false,"searchable":false,"name":"ft3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"fifth","expValue":"","minValue":"","maxValue":""}},"fr3":{"required":false,"searchable":false,"name":"fr3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"forth","expValue":"","minValue":"","maxValue":""}},"t3":{"required":false,"searchable":false,"name":"t3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"third","expValue":"","minValue":"","maxValue":""}},"s3":{"required":false,"searchable":false,"name":"s3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"second","expValue":"","minValue":"","maxValue":""}},"f3":{"required":false,"searchable":false,"name":"f3","type":"string"},"id":{"required":true,"searchable":true,"name":"id","type":"first","expValue":"","minValue":"","maxValue":""},"collectionName":"first"}];
             if (data) {
-
-
                 try {
                     var wholeArr = [];
-                    var outerWidth = 120;
+                    var outerWidth;
                     data.forEach(function (item, i) {
                         if (!item) {
                             return;
                         } else {
-                            // var counter = 0;
-                            // function findLevels(obj) {
-                            //     for (var prop in obj) {
-                            //         // if (prop !== 'col' && prop.type === undefined) {
-                            //             counter++;
-                            //             console.dir(obj[prop]);
-                            //             // findLevels(obj[prop]);
-                            //         }
-                            //     }
-                            // }
-                            // findLevels(item);
-                            // console.log(counter);
+                            var levCounter = 1;
+                            var localCounter = 1;
+                            function findLevels(obj, lc) {
+                                if (!obj) {
+                                    return;
+                                } else {
+                                    for (var prop in obj) {
+                                        if (prop !== 'collectionName' && obj[prop].type === undefined) {
+                                            var local = lc;
+                                            local++;
+                                            findLevels(obj[prop], local);
+                                        }
+                                        if (local > levCounter) {
+                                            levCounter = local;
+                                        }
+                                    }
+                                }
+                            }
+                            findLevels(item, localCounter);
+                            outerWidth = 150 + levCounter * 10;
                             var subArr = [];
-                            subArr[0] = graph.insertVertex(parent, null, item.collectionName, 0, 0, 120, 50);
+                            subArr[0] = graph.insertVertex(parent, null, item.collectionName, 0, 0, outerWidth,
+                                30, 'MYSTYLE;swimlaneFillColor=yellow;fillOpacity=50;strokeWidth=3');
+                            subArr[0].geometry.alternateBounds = new mxRectangle(0, 0, outerWidth, 30);
                             for (var prop in item) {
                                 if (prop !== 'collectionName') {
                                     function emb(obj, propName, parentArr, contWidth) {
-                                        var innerWidth = contWidth - 20;
+                                        var innerWidth = contWidth - 10;
                                         var propValue = obj[propName];
                                         if (propValue.type === undefined) {
                                             var subArr = [];
-                                            subArr[0] = graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth, 30);
+                                            var parentElArr = graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth,
+                                                30, 'MYSTYLE;strokeWidth=1;strokeColor=#000000');
+                                            parentElArr.geometry.alternateBounds = new mxRectangle(0, 0, innerWidth, 30);
+                                            subArr[0] = parentElArr;
                                             for (var key in propValue) {
                                                 emb(propValue, key, subArr, innerWidth);
                                             }
                                         } else {
-                                            parentArr.push(graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth, 30))
+                                            var elArr = graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth,
+                                                30, 'MYSTYLE;swimlaneFillColor=white;fillColor=#ffffff;fillOpacity=100');
+                                            parentArr.push(elArr);
                                         }
                                     }
-
                                     emb(item, prop, subArr, outerWidth);
                                 }
                             }
                         }
                         wholeArr[i] = subArr;
-                        // console.dir(subArr);
                     });
-                    // return wholeArr;
-                    // console.dir(wholeArr);
-
 
                     // var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
                     //
