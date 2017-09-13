@@ -82,45 +82,51 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
 
                 try {
                     var wholeArr = [];
+                    var outerWidth = 120;
                     data.forEach(function (item, i) {
-                        var subArr = [];
-                        subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
-                        for (var prop in item) {
-                            if (prop !== 'col') {
-                                function emb(obj, propName, parentArr) {
-                                    // console.log(parentArr);
-                                    if (propName !== 'link') {
-                                        // console.log('hi');
-                                        for (var key in obj[propName]) {
-                                            var ttt = obj[propName];
-                                            console.dir(key + ' ' + ttt[key].type);
-                                            if (ttt[key].type === 'undefined') {
-                                                var subArr = [];
-                                                subArr[0] = graph.insertVertex(parentArr[0], null, key, 0, 0, 120, 50);
-                                                emb(ttt[key], key, subArr);
-                                            } else {
-                                                parentArr.push(graph.insertVertex(parentArr[0], null, key, 0, 0, 100, 30))
+                        if (!item) {
+                            return;
+                        } else {
+                            // var counter = 0;
+                            // function findLevels(obj) {
+                            //     for (var prop in obj) {
+                            //         // if (prop !== 'col' && prop.type === undefined) {
+                            //             counter++;
+                            //             console.dir(obj[prop]);
+                            //             // findLevels(obj[prop]);
+                            //         }
+                            //     }
+                            // }
+                            // findLevels(item);
+                            // console.log(counter);
+                            var subArr = [];
+                            subArr[0] = graph.insertVertex(parent, null, item.col, 0, 0, 120, 50);
+                            for (var prop in item) {
+                                if (prop !== 'col') {
+                                    function emb(obj, propName, parentArr, contWidth) {
+                                        var innerWidth = contWidth - 20;
+                                        var propValue = obj[propName];
+                                        if (propValue.type === undefined) {
+                                            var subArr = [];
+                                            subArr[0] = graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth, 30);
+                                            for (var key in propValue) {
+                                                emb(propValue, key, subArr, innerWidth);
                                             }
+                                        } else {
+                                            parentArr.push(graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth, 30))
                                         }
                                     }
+
+                                    emb(item, prop, subArr, outerWidth);
                                 }
-                                emb(item, prop, subArr);
                             }
                         }
                         wholeArr[i] = subArr;
-                        console.dir(subArr);
+                        // console.dir(subArr);
                     });
                     // return wholeArr;
-                    console.dir(wholeArr);
-                    // var wholeArr = [];
-                    // for (var i = 0; i < data.length; i++) {
-                    //     wholeArr[i] = graph.insertVertex(parent, null, data[i].col, 0, 0, 120, 0, 'column');
-                    //     for (var prop in data[i]) {
-                    //         if (prop !== col) {
-                    //
-                    //         }
-                    //     }
-                    // }
+                    // console.dir(wholeArr);
+
 
                     // var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
                     //
