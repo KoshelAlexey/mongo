@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
             preSchema = data;
 
             res.send(data);
-            fs.writeFile('./data/back_arr.txt',JSON.stringify(data));
+            // fs.writeFile('./data/back_arr.txt',JSON.stringify(data));
 
         })
     // console.log(data)
