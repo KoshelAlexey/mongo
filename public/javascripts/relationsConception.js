@@ -98,7 +98,7 @@ function relControl(thisField,col,rel,colName) {
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
                 if(endCol.fields[f].type === "rel") {
                     if (recursionCheck(endCol.name)) {
-                        res[endCol.fields[f].name] = "recursion"
+                        res.emb[endCol.fields[f].name] = "recursion"
                     }
                     else {
                         res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name, colName);
@@ -106,7 +106,7 @@ function relControl(thisField,col,rel,colName) {
 
                 }
                 else{
-                    res[endCol.fields[f].name] = endCol.fields[f];
+                    res.emb[endCol.fields[f].name] = endCol.fields[f];
                 }
             }
 
