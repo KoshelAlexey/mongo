@@ -37,6 +37,7 @@ router.post('/', function(req, res, next) {
         if(error) throw error;
         var d = fs.readFileSync('./data/raw_data.txt', 'utf8');
     });
+
     // concept(rawData);
     var p = new Promise(
         (resolve,reject)=>{
@@ -47,6 +48,8 @@ router.post('/', function(req, res, next) {
             preSchema = data;
 
             res.send(data);
+            fs.writeFile('./data/back_arr.txt',JSON.stringify(data));
+
         })
     // console.log(data)
     // var p = new Promise(
