@@ -91,7 +91,8 @@ function relControl(thisField,col,rel,colName) {
 
     switch (thisRel.type) {
         case 'oneToOne': {
-            if (!relationsCheck(endCol.name)){
+            res.emb = {};
+            if (!toTargetCollectionRelationsCheck(endCol, thisColName)){
                 blackList.push(endCol.name);
             };
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
@@ -100,7 +101,7 @@ function relControl(thisField,col,rel,colName) {
                         res[endCol.fields[f].name] = "recursion"
                     }
                     else {
-                        res[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name, colName);
+                        res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name, colName);
                     }
 
                 }
@@ -131,7 +132,7 @@ function relControl(thisField,col,rel,colName) {
                 }
             }
             else{
-                res.emb = "Too many documents. Recomed value <50"
+                res.emb = "Too many documents. Recommend max value <50"
             }
 
             var rec = 1;
@@ -146,6 +147,9 @@ function relControl(thisField,col,rel,colName) {
         case 'manyToOne': {
             res.emb = {};
             res.link = {};
+            if (!toTargetCollectionRelationsCheck(endCol, thisColName)){
+                blackList.push(endCol.name);
+            };
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
                 if(endCol.fields[f].type === "rel") {
                     if (!recursionCheck(endCol.name)) {
@@ -159,22 +163,27 @@ function relControl(thisField,col,rel,colName) {
                     res.emb[endCol.fields[f].name] = endCol.fields[f];
                 }
             }
-
-            var rec = 1;
-            var colArr = [];
-            colArr.push(endCol);
-            collectionBuild(colArr,allRelat,rec);
-            res.link.id = "link to: "+ endCol.name;
+            if(toTargetCollectionRelationsCheck(endCol, thisColName)){
+                var rec = 1;
+                var colArr = [];
+                colArr.push(endCol);
+                collectionBuild(colArr,allRelat,rec);
+                res.link.id = "link to: "+ endCol.name;
+            }
+            else{
+                res.link = "Target collection will not exist"
+            }
 
             return res
         }
             break;
         case 'manyToMany': {
+            res.link = {};
             var rec = 1;
             var colArr = [];
             colArr.push(endCol);
             collectionBuild(colArr,allRelat,rec);
-            res.id = "link to: "+ endCol.name;
+            res.link.id = "link to: "+ endCol.name;
             return res
         }
             break;
@@ -253,29 +262,39 @@ function blackListCheck(collectionsName){
     }
 }
 
-function relationsCheck(collectionsName) {
-    var thisColName = collectionsName;
-    var allCollect = allCol;
-    var allRelat = allRel
+function fromTargetCollectionRelationsCheck(collection) {
+    var thisCol = collection;
+    var allRelat = allRel;
 
-    for(var i = 0; allCollect[i] !== undefined;i++) {
-        if (allCollect[i].name === thisColName) {
-            for (var j = 0; allCollect[i].fields[j] !== undefined; j++) {
-                if (allCollect[i].fields[j].type === "rel") {
-                    for (var r = 0; allRelat[r] !== undefined; r++) {
-                        if (allCollect[i].fields[j].name === allRelat[r].beginField
-                            && thisColName === allRelat[r].beginCollection) {
-                            if (allRelat[r].type !== "oneToOne") {
-                                return true
-                            }
-                        }
+    for (var j = 0; thisCol.fields[j] !== undefined; j++) {
+        if (thisCol.fields[j].type === "rel") {
+            for (var r = 0; allRelat[r] !== undefined; r++) {
+                if (thisCol.fields[j].name === allRelat[r].beginField
+                    && thisCol.name === allRelat[r].beginCollection) {
+                    if (allRelat[r].type !== "oneToOne") {
+                        return true
                     }
-
                 }
             }
-            return false
+
         }
     }
+    return false
+}
+
+function toTargetCollectionRelationsCheck(collection, prColName) {
+    var prewColName = prColName;
+    var thisCol = collection;
+    var allRelat = allRel;
+
+    for (var r = 0; allRelat[r] !== undefined; r++) {
+        if (allRelat[r].endCollection === thisCol.name &&
+            allRelat[r].beginCollection !== prewColName &&
+            allRelat[r].type !== "oneToOne") {
+            return true
+        }
+    }
+    return false
 }
 
 module.exports = relationsConception;
