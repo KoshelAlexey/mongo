@@ -27,11 +27,18 @@
  </head>
 <body ng-app="mongo-app">
     <div class="main-content" ng-controller="parentController">
-        <p><button type="button" ng-click="addCollection(dbStructure)">Добавить коллекцию</button></p>
-        <form class="wrapper" ng-repeat="item in dbStructure.collections">
-            <p>
+        <div class="nav-button-container">
+            <button class="nav-button" type="button" ng-click="goUp()">Вверх</button>
+            <button class="nav-button-add" type="button" ng-click="addCollection(dbStructure)"><div class="bgimg"></div></button>
+            <button class="nav-button" type="button" ng-click="goDown()">Вниз</button>
+        </div>
+        <form class="wrapper-col" ng-repeat="item in dbStructure.collections">
+            <div class="clearfix col-name-wrapper">
+            <p class="col-name-input">
                 <label><span>Имя коллекции: </span><input type="text" ng-model="item.name"></label>
             </p>
+            <div class="col-name-output">{{item.name}}</div>
+            </div>
             <hr>
             <p>
                 <button type="button" ng-click="addField(item)">Добавить поле</button>
