@@ -81,6 +81,15 @@ mongoApp.controller('parentController',
             collection.fields.push(newField);
         };
 
+        $scope.goUp = function () {
+            window.scrollTo(0,0);
+        };
+
+        $scope.goDown = function () {
+            var height = document.getElementsByTagName("html")[0].offsetHeight;
+            window.scrollTo(0,height);
+        };
+
         $scope.removeField = function(collection, field) {
             if (!field.required) {
                 var fieldPosition = collection.fields.indexOf(field);
