@@ -136,6 +136,13 @@ mongoApp.controller('parentController',
                 var idCheck = false;
                 colItem.fields.forEach(function(field) {
                     if (field.name === 'id') {
+                        field.required = true;
+                        field.searchable = true;
+                        field.name = 'id';
+                        field.type = colItem.name;
+                        field.expValue = '';
+                        field.minValue = '';
+                        field.maxValue = '';
                         idCheck = true;
                     }
                 });
@@ -165,7 +172,7 @@ mongoApp.controller('parentController',
                 rel.range = '';
                 relArr.push(rel);
             });
-
+            console.dir(collections);
             if(!simpleValidation(collections)){
                 userDbStructureService.sendUserStructure(collections, relArr).then(
                     (data)=>{
