@@ -78,7 +78,7 @@ function relControl(thisField,col,rel,colName) {
         }
     })();
     if(!thisRel){
-        return {err:"Relation error", errmsg:"Relation don't used"}
+        return {wrn:"Relation warning!", msg:"Relation don't used. "+"Collection: "+thisColName+" "+"Field: "+field.name+"."}
     }
     var endCol = (function () {
         for(var c = 0; allCollect[c] !== undefined;c++) {
@@ -98,7 +98,8 @@ function relControl(thisField,col,rel,colName) {
             for(var f = 0; endCol.fields[f] !== undefined;f++) {
                 if(endCol.fields[f].type === "rel") {
                     if (recursionCheck(endCol.name)) {
-                        res.emb[endCol.fields[f].name] = "recursion"
+                        res.emb.wrn = "Recursion warning!";
+                        res.emb.msg = "Collection will include itself. "+"Collection: "+thisColName+" "+"Field: "+field.name+".";
                     }
                     else {
                         res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name, colName);
@@ -132,7 +133,8 @@ function relControl(thisField,col,rel,colName) {
                             res.emb.meta.relation = thisRel;
                         }
                         else{
-                            res.emb[endCol.fields[f].name] = "recursion"
+                            res.emb.wrn = "Recursion warning!";
+                            res.emb.msg = "Collection will include itself. "+"Collection: "+thisColName+" "+"Field: "+field.name+".";
                         }
                     }
                     else{
@@ -144,7 +146,7 @@ function relControl(thisField,col,rel,colName) {
                 }
             }
             else{
-                res.emb = {err:"Can't create element",errmsg:"Too many documents. Recommend max value <50"}
+                res.emb = {err:"Creation error!",msg:"Can't create element. Too many documents. Recommend max value <50. "+"Collection: "+thisColName+" "+"Field: "+field.name+"."}
             }
 
             var rec = 1;
@@ -173,7 +175,8 @@ function relControl(thisField,col,rel,colName) {
                         res.emb.meta.relation = thisRel;
                     }
                     else{
-                        res.emb[endCol.fields[f].name] = "recursion"
+                        res.emb.wrn = "Recursion warning!";
+                        res.emb.msg = "Collection will include itself. "+"Collection: "+thisColName+" "+"Field: "+field.name+".";
                     }
                 }
                 else{
@@ -194,7 +197,9 @@ function relControl(thisField,col,rel,colName) {
                 res.link.meta.relation = thisRel;
             }
             else{
-                res.link = "Target collection will not exist"
+                // res.link = "Target collection will not exist"
+                res.link.err = "Link error!";
+                res.link.msg = "Target collection will not exist.";
             }
 
             return res

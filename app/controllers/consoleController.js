@@ -7,50 +7,68 @@ mongoApp.controller('consoleController', function ($scope ,$rootScope) {
 
     $rootScope.$on('console', function (event,data) {
         $scope.responseDataModel = data;
-        var respStat = {};
-        respStat.timestamp = timeStampCreate();
         if(data){
-
-            respStat.success = "Ok!";
-            respStat.message = "Success request. You got data from the server.";
-            $scope.consoleModel.report.push(respStat);
+            consoleLog("Ok!","Success request. You got data from the server.", "success");
         }
         else{
-            respStat.error = "Failed request";
-            respStat.message = "Something wrong. Response haven't data. You can try resend your request.";
-            $scope.consoleModel.report.push(respStat);
+            consoleLog("Failed request","Something wrong. Response haven't data. You can try resend your request.", "error");
         }
         scan(data);
 
     });
 
-    function scan(data) {
-        var model = data;
+    $rootScope.$on('localErr', function (event,data) {
+        console.dir(data);
+        consoleLog(data.err, data.msg, "error");
 
-        data.forEach((data, i)=>{
+    });
+
+
+    function scan(resp) {
+        var model = resp;
+
+        model.forEach((data, i)=>{
             if(typeof(data) === "object"){
                 for(var key in data){
                     if (!data[key].type && key !== "collectionName"){
-                        if(data[key].err){
-                            var repot = {};
-                            repot.timestamp = timeStampCreate();
-                            repot.error = data[key].err;
-                            repot.message = data[key].errmsg;
-                            $scope.consoleModel.report.push(repot);
-                        }
-                        else{
-                            console.dir(data[key])
-                            var arr = [data[key]]
-                            scan(arr);
+                        switch (key){
+                            case "scs":{
+                                consoleLog(data.scs,data.msg, "success");
+                            }
+                                break;
+                            case "wrn":{
+                                consoleLog(data.wrn,data.msg, "warning");
+                            }
+                                break;
+                            case "err":{
+                                consoleLog(data.err,data.msg, "error");
+                            }
+                                break;
+                            default:{
+                                var arr = [data[key]];
+                                scan(arr);
+                            }
+                                break;
                         }
                     }
                 }
             }
-
         })
-
     }
 
+    function consoleLog(error, message, type) {
+        var header = error;
+        var msg = message;
+        var line = {};
+
+        line.timestamp = timeStampCreate();
+        line[type] = header;
+        line.message = msg;
+
+        $scope.consoleModel.report.unshift(line);
+
+    }
+        
     function timeStampCreate() {
         var ts = "";
         var date = new Date();
