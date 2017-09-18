@@ -1,6 +1,6 @@
 'use strict';
 
-mongoApp.service('userDbStructureService', function($http, $q) {
+mongoApp.service('userDbStructureService', function($http, $q, $rootScope) {
     return {
         sendUserStructure: function (collections, relations) {
             var deferred = $q.defer();
@@ -16,6 +16,7 @@ mongoApp.service('userDbStructureService', function($http, $q) {
             $http(req).then(
                 function resSuccess(response) {
                     console.dir(response.data);
+                    $rootScope.$emit('console',response.data);
                     deferred.resolve(response.data);
                 },
                 function resError(response) {
