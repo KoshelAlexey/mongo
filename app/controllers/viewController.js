@@ -9,8 +9,10 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
 
 
     $scope.main = function () {
+        graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
+        // graph =null;
+        //  graph = new mxGraph(container);
 
-            graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
         // console.log("dddd")
         // Checks if the browser is supported
 
@@ -85,8 +87,9 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
             var data = [{"ff":{"tt":{"required":true,"searchable":false,"name":"tt","type":"string","expValue":"","minValue":"","maxValue":""},"id":{"required":true,"searchable":true,"name":"id","type":"t","expValue":"","minValue":"","maxValue":""}},"fff":{"required":false,"searchable":false,"name":"fff","type":"string"},"ffff":{"emb":{"ss":{"required":true,"searchable":false,"name":"ss","type":"string","expValue":"","minValue":"","maxValue":""},"sss":{"emb":{"frfr":{"required":true,"searchable":false,"name":"frfr","type":"string","expValue":"","minValue":"","maxValue":""},"id":{"required":true,"searchable":true,"name":"id","type":"fr","expValue":"","minValue":"","maxValue":""}},"link":{"id":"link to: fr"}},"id":{"required":true,"searchable":true,"name":"id","type":"s","expValue":"","minValue":"","maxValue":""}},"link":{"id":"link to: s"}},"id":{"required":true,"searchable":true,"name":"id","type":"f","expValue":"","minValue":"","maxValue":""},"collectionName":"f"},{"ss":{"required":true,"searchable":false,"name":"ss","type":"string","expValue":"","minValue":"","maxValue":""},"sss":{"emb":{"frfr":{"required":true,"searchable":false,"name":"frfr","type":"string","expValue":"","minValue":"","maxValue":""},"id":{"required":true,"searchable":true,"name":"id","type":"fr","expValue":"","minValue":"","maxValue":""}},"link":{"id":"link to: fr"}},"id":{"required":true,"searchable":true,"name":"id","type":"s","expValue":"","minValue":"","maxValue":""},"collectionName":"s"},{"frfr":{"required":true,"searchable":false,"name":"frfr","type":"string","expValue":"","minValue":"","maxValue":""},"id":{"required":true,"searchable":true,"name":"id","type":"fr","expValue":"","minValue":"","maxValue":""},"collectionName":"fr"}];
             console.dir(data);
             if (data) {
+                var wholeArr = [];
                 try {
-                    var wholeArr = [];
+
 
                     data.forEach(function (item, i) {
                         if (!item) {
@@ -185,6 +188,7 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                 finally {
                     // Updates the display
                     graph.getModel().endUpdate();
+                    console.dir(wholeArr)
                 }
             }
         })
@@ -236,10 +240,11 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         });
                         var elArr = graph.insertVertex(subArr[0], null, propName + ' is linked to collection: ' + collName, 0, 0, innerWidth - 10,
                             30, 'MYSTYLE;swimlaneFillColor=white;fillColor=#ffffff;fillOpacity=100');
-                        graph.insertEdge(parentElArr, null, '', elArr, endColl[0]);
-                        var gr = graph.insertEdge(parentElArr, null, '', elArr, endColl[0]);
+                        graph.insertEdge(parentElArr, null, '', elArr, endColl[0], 'verticalAlign=bottom;').geometry.relative = false
+                        // var gr = graph.insertEdge(parentElArr, null, '', elArr, endColl[0]);
                         subArr.push(elArr);
-                        console.dir(gr);
+                        console.dir("ddd")
+
                     } else {
                         emb(propValue, key, subArr, innerWidth, arrToGraph)
                     }
