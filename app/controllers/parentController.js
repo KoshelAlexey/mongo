@@ -1,7 +1,7 @@
 'use strict';
 
 mongoApp.controller('parentController',
-    function renderingForm($scope, userDbStructureService, $http) {
+    function renderingForm($scope, userDbStructureService, $http, $rootScope) {
 
         $scope.status = {schema:false,base:false,tests:false};
 
@@ -165,11 +165,15 @@ mongoApp.controller('parentController',
                 rel.range = '';
                 relArr.push(rel);
             });
-            userDbStructureService.sendUserStructure(collections, relArr).then(
-                (data)=>{
-                    $scope.status = data.status;
-                });
+
+            if(!simpleValidation(collections)){
+                userDbStructureService.sendUserStructure(collections, relArr).then(
+                    (data)=>{
+                        $scope.status = data.status;
+                    });
+            };
         };
+
         $scope.getBuild = function () {
             var req = {
                 method: 'GET',
@@ -195,5 +199,35 @@ mongoApp.controller('parentController',
                 .then((resp)=>{$scope.status = resp.data.status}
 
                 );
+        }
+        function simpleValidation(collections) {
+            var allCol = collections;
+            var error = false;
+            var report = {};
+            report.header = "Bad primary data!";
+            report.type = "error";
+
+
+            for (var i = 0;  allCol[i] !== undefined;i++){
+                if(allCol[i].name === ""){
+                    report.msg = "Collection name don't specified. "+ "Collection #"+i;
+                    $rootScope.$emit('localErr',report);
+                    error = true;
+                }
+                for (var f = 0;  allCol[i].fields[f] !== undefined;f++){
+                    if(allCol[i].fields[f].required === true && allCol[i].fields[f].name === ""){
+                        report.msg = "Name of required field don't specified. "+ "Collection #"+i+" Field #"+f;
+                        $rootScope.$emit('localErr',report);
+                        error = true;
+                    }
+                    if(allCol[i].fields[f].type === ""){
+                        report.msg = "Field type don't specified. "+ "Collection #"+i+" Field #"+f;
+                        $rootScope.$emit('localErr',report);
+                        error = true;
+                    }
+                }
+            }
+
+            return error;
         }
 });

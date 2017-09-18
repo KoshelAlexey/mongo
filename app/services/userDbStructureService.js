@@ -20,7 +20,11 @@ mongoApp.service('userDbStructureService', function($http, $q, $rootScope) {
                     deferred.resolve(response.data);
                 },
                 function resError(response) {
-
+                    var report = {};
+                    report.header = "Connection error!";
+                    report.msg = "Bad response from the server. Status: "+response.status;
+                    report.type = "error";
+                    $rootScope.$emit('localErr',report);
                     deferred.reject(response.status);
                 }
             );

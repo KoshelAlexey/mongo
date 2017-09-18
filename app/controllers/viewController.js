@@ -9,8 +9,10 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
 
 
     $scope.main = function () {
+        graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
+        // graph =null;
+        //  graph = new mxGraph(container);
 
-            graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
         // console.log("dddd")
         // Checks if the browser is supported
 
@@ -71,7 +73,6 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
         // Resizes the container
         graph.setResizeContainer(false);
 
-
         // Gets the default parent for inserting new cells. This
         // is normally the first child of the root (ie. layer 0).
         var parent = graph.getDefaultParent();
@@ -127,7 +128,6 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         }
                     });
                 }
-
                 finally {
                     // Updates the display
                     graph.getModel().endUpdate();
@@ -194,7 +194,6 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         emb(propValue, key, subArr, innerWidth, arrToGraph)
                     }
                 }
-
                 parentArr.push(subArr);
             }
         // }
