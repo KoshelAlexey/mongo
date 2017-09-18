@@ -78,7 +78,7 @@ function relControl(thisField,col,rel,colName) {
         }
     })();
     if(!thisRel){
-        return "relation don't used"
+        return {err:"Relation error", errmsg:"Relation don't used"}
     }
     var endCol = (function () {
         for(var c = 0; allCollect[c] !== undefined;c++) {
@@ -102,11 +102,17 @@ function relControl(thisField,col,rel,colName) {
                     }
                     else {
                         res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name, colName);
+                        res.emb.meta = {};
+                        res.emb.meta.field = field;
+                        res.emb.meta.relation = thisRel;
                     }
 
                 }
                 else{
                     res.emb[endCol.fields[f].name] = endCol.fields[f];
+                    res.emb.meta = {};
+                    res.emb.meta.field = field;
+                    res.emb.meta.relation = thisRel;
                 }
             }
 
@@ -121,6 +127,9 @@ function relControl(thisField,col,rel,colName) {
                     if(endCol.fields[f].type === "rel") {
                         if (!recursionCheck(endCol.name)) {
                             res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name);
+                            res.emb.meta = {};
+                            res.emb.meta.field = field;
+                            res.emb.meta.relation = thisRel;
                         }
                         else{
                             res.emb[endCol.fields[f].name] = "recursion"
@@ -128,11 +137,14 @@ function relControl(thisField,col,rel,colName) {
                     }
                     else{
                         res.emb[endCol.fields[f].name] = endCol.fields[f];
+                        res.emb.meta = {};
+                        res.emb.meta.field = field;
+                        res.emb.meta.relation = thisRel;
                     }
                 }
             }
             else{
-                res.emb = "Too many documents. Recommend max value <50"
+                res.emb = {err:"Can't create element",errmsg:"Too many documents. Recommend max value <50"}
             }
 
             var rec = 1;
@@ -140,7 +152,9 @@ function relControl(thisField,col,rel,colName) {
             colArr.push(endCol);
             collectionBuild(colArr,allRelat,rec);
             res.link.id = "link to: "+ endCol.name;
-
+            res.link.meta = {};
+            res.link.meta.field = field;
+            res.link.meta.relation = thisRel;
             return res
         }
             break;
@@ -154,6 +168,9 @@ function relControl(thisField,col,rel,colName) {
                 if(endCol.fields[f].type === "rel") {
                     if (!recursionCheck(endCol.name)) {
                         res.emb[endCol.fields[f].name] = relControl(endCol.fields[f], allCollect, allRelat, endCol.name);
+                        res.emb.meta = {};
+                        res.emb.meta.field = field;
+                        res.emb.meta.relation = thisRel;
                     }
                     else{
                         res.emb[endCol.fields[f].name] = "recursion"
@@ -161,6 +178,9 @@ function relControl(thisField,col,rel,colName) {
                 }
                 else{
                     res.emb[endCol.fields[f].name] = endCol.fields[f];
+                    res.emb.meta = {};
+                    res.emb.meta.field = field;
+                    res.emb.meta.relation = thisRel;
                 }
             }
             if(toTargetCollectionRelationsCheck(endCol, thisColName)){
@@ -169,6 +189,9 @@ function relControl(thisField,col,rel,colName) {
                 colArr.push(endCol);
                 collectionBuild(colArr,allRelat,rec);
                 res.link.id = "link to: "+ endCol.name;
+                res.link.meta = {};
+                res.link.meta.field = field;
+                res.link.meta.relation = thisRel;
             }
             else{
                 res.link = "Target collection will not exist"
@@ -184,6 +207,9 @@ function relControl(thisField,col,rel,colName) {
             colArr.push(endCol);
             collectionBuild(colArr,allRelat,rec);
             res.link.id = "link to: "+ endCol.name;
+            res.link.meta = {};
+            res.link.meta.field = field;
+            res.link.meta.relation = thisRel;
             return res
         }
             break;
