@@ -18,9 +18,7 @@ mongoApp.controller('consoleController', function ($scope ,$rootScope) {
     });
 
     $rootScope.$on('localErr', function (event,data) {
-        console.dir(data);
-        consoleLog(data.err, data.msg, "error");
-
+        consoleLog(data.header, data.msg, data.type);
     });
 
 
