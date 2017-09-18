@@ -71,6 +71,7 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
         // Resizes the container
         graph.setResizeContainer(false);
 
+
         // Gets the default parent for inserting new cells. This
         // is normally the first child of the root (ie. layer 0).
         var parent = graph.getDefaultParent();
@@ -100,16 +101,6 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                             findLevels(item, localCounter);
                             outerWidth = 150 + levelCounter * 10;
 
-                            // subArr[0] = graph.insertVertex(parent, null, '', 0, 0, outerWidth,
-                            //     0);
-                            // subArr[0].geometry.alternateBounds = new mxRectangle(0, 0, outerWidth, 0);
-                            //
-                            // var colNameField = graph.insertVertex(subArr[0], null, item.collectionName, 0, 0, outerWidth - 10,
-                            //     30, 'MYSTYLE;swimlaneFillColor=yellow;fillOpacity=50;strokeWidth=3');
-                            // subArr[0].geometry.alternateBounds = new mxRectangle(0, 0, outerWidth, 30);
-
-                            // subArr.push(colNameField);
-
                             subArr[0] = graph.insertVertex(parent, null, item.collectionName, 0, 0, outerWidth,
                                 30, 'MYSTYLE;swimlaneFillColor=yellow;fillOpacity=50;strokeWidth=3');
                             subArr[0].geometry.alternateBounds = new mxRectangle(0, 0, outerWidth, 30);
@@ -135,56 +126,17 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                             });
                         }
                     });
-                    console.dir(wholeArr);
-
-                    // var col1 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
-                    //
-                    // var v1 = graph.insertVertex(col1, null, '1', 0, 0, 100, 30);
-                    // v1.collapsed = true;
-                    //
-                    // var v11 = graph.insertVertex(v1, null, '1.1', 0, 0, 80, 30);
-                    // v11.collapsed = true;
-                    //
-                    // var v111 = graph.insertVertex(v11, null, '1.1.1', 0, 0, 60, 30);
-                    // var v112 = graph.insertVertex(v11, null, '1.1.2', 0, 0, 60, 30);
-                    //
-                    // var v12 = graph.insertVertex(v1, null, '1.2', 0, 0, 80, 30);
-                    //
-                    // var col2 = graph.insertVertex(parent, null, '', 0, 0, 120, 0, 'column');
-                    //
-                    // var v2 = graph.insertVertex(col2, null, '2', 0, 0, 100, 30);
-                    // v2.collapsed = true;
-                    //
-                    // var v21 = graph.insertVertex(v2, null, '2.1', 0, 0, 80, 30);
-                    // v21.collapsed = true;
-                    //
-                    // var v211 = graph.insertVertex(v21, null, '2.1.1', 0, 0, 60, 30);
-                    // var v212 = graph.insertVertex(v21, null, '2.1.2', 0, 0, 60, 30);
-                    //
-                    // var v22 = graph.insertVertex(v2, null, '2.2', 0, 0, 80, 30);
-                    //
-                    // var v3 = graph.insertVertex(col2, null, '3', 0, 0, 100, 30);
-                    // v3.collapsed = true;
-                    //
-                    // var v31 = graph.insertVertex(v3, null, '3.1', 0, 0, 80, 30);
-                    // v31.collapsed = true;
-                    //
-                    // var v311 = graph.insertVertex(v31, null, '3.1.1', 0, 0, 60, 30);
-                    // var v312 = graph.insertVertex(v31, null, '3.1.2', 0, 0, 60, 30);
-                    //
-                    // var v32 = graph.insertVertex(v3, null, '3.2', 0, 0, 80, 30);
-                    //
-                    // graph.insertEdge(parent, null, '', v111, v211);
-                    // graph.insertEdge(parent, null, '', v112, v212);
-                    // graph.insertEdge(parent, null, '', v112, v22);
-                    //
-                    // graph.insertEdge(parent, null, '', v12, v311);
-                    // graph.insertEdge(parent, null, '', v12, v312);
-                    // graph.insertEdge(parent, null, '', v12, v32);
                 }
+
                 finally {
                     // Updates the display
                     graph.getModel().endUpdate();
+
+                    wholeArr.forEach(function(graphColl) {
+                        var whAr = wholeArr;
+                        edgesInserting(graphColl, whAr);
+
+                    });
                 }
             }
         })
@@ -211,7 +163,6 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
     function emb(obj, propName, parentArr, contWidth, arrToGraph) {
         var innerWidth = contWidth - 10;
         var propValue = obj[propName];
-        // console.dir(arrToGraph);
 
         if (typeof propValue !== 'object' || "type" in propValue) {
             var elArr = graph.insertVertex(parentArr[0], null, propName, 0, 0, innerWidth,
@@ -236,16 +187,39 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                         });
                         var elArr = graph.insertVertex(subArr[0], null, propName + ' is linked to collection: ' + collName, 0, 0, innerWidth - 10,
                             30, 'MYSTYLE;swimlaneFillColor=white;fillColor=#ffffff;fillOpacity=100');
-                        graph.insertEdge(parentElArr, null, '', elArr, endColl[0]);
-                        var gr = graph.insertEdge(parentElArr, null, '', elArr, endColl[0]);
+                        elArr.beginField = parentElArr.value;
+                        elArr.endColl = collName;
                         subArr.push(elArr);
-                        console.dir(gr);
                     } else {
                         emb(propValue, key, subArr, innerWidth, arrToGraph)
                     }
                 }
+
                 parentArr.push(subArr);
             }
         // }
+    }
+
+    function edgesInserting(cellsArray, wholeArray) {
+        var whAr = wholeArray;
+        cellsArray.forEach(function (arrCell, i) {
+            if ('value' in arrCell) {
+                if ('beginField' in arrCell) {
+                    var endColl;
+                    whAr.forEach(function (item) {
+                        if (arrCell.endColl === item[0].value) {
+                            endColl = item[0];
+                        }
+                    });
+                    var entryXpadding = 15 / endColl.geometry.height;
+
+                    graph.insertEdge(cellsArray[0], null, '', arrCell, endColl,
+                        'edgeStyle=elbowEdgeStyle;elbow=horizontal;orthogonal=0;'+
+                        'exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=' + entryXpadding + ';entryPerimeter=0');
+                }
+            } else {
+                edgesInserting(arrCell, whAr);
+            }
+        });
     }
 });
