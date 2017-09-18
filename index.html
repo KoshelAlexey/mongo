@@ -24,14 +24,22 @@
     <!--controllers-->
     <script type="text/javascript" src="app/controllers/parentController.js"></script>
     <script type="text/javascript" src="app/controllers/viewController.js"></script>
+    <script type="text/javascript" src="app/controllers/consoleController.js"></script>
  </head>
 <body ng-app="mongo-app">
     <div class="main-content" ng-controller="parentController">
-        <p><button type="button" ng-click="addCollection(dbStructure)">Добавить коллекцию</button></p>
-        <form class="wrapper" ng-repeat="item in dbStructure.collections">
-            <p>
+        <div class="nav-button-container">
+            <button class="nav-button" type="button" ng-click="goUp()">Вверх</button>
+            <button class="nav-button-add" type="button" ng-click="addCollection(dbStructure)"><div class="bgimg"></div></button>
+            <button class="nav-button" type="button" ng-click="goDown()">Вниз</button>
+        </div>
+        <form class="wrapper-col" ng-repeat="item in dbStructure.collections">
+            <div class="clearfix col-name-wrapper">
+            <p class="col-name-input">
                 <label><span>Имя коллекции: </span><input type="text" ng-model="item.name"></label>
             </p>
+            <div class="col-name-output">{{item.name}}</div>
+            </div>
             <hr>
             <p>
                 <button type="button" ng-click="addField(item)">Добавить поле</button>
@@ -150,6 +158,15 @@
         <button ng-click="viewShow.show = !viewShow.show">Show View Area</button>
         <button ng-click="main()">refresh</button>
         <div id="container" ng-show="viewShow.show"></div>
+    </div>
+    <div class="console" ng-controller="consoleController">
+        <div class="console-area">
+            <div class="console-line clearfix" ng-repeat="item in consoleModel.report">
+                <div class="timestamp">{{item.timestamp}}</div>
+                <div ng-class="item.error ? 'error' : item.warning ? 'warning':'success'">{{item.error}}{{item.warning}}{{item.success}}</div>
+                <div class="message">{{item.message}}</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
