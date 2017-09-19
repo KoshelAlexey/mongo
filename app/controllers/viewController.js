@@ -212,9 +212,8 @@ mongoApp.controller('viewController', function renderingForm($scope, userDbStruc
                     });
                     var entryXpadding = 15 / endColl.geometry.height;
 
-                    graph.insertEdge(cellsArray[0], null, '', arrCell, endColl,
-                        'edgeStyle=elbowEdgeStyle;elbow=horizontal;orthogonal=0;'+
-                        'exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=' + entryXpadding + ';entryPerimeter=0');
+                    graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
+                    graph.insertEdge(cellsArray[0], null, '', arrCell, endColl);
                 }
             } else {
                 edgesInserting(arrCell, whAr);
