@@ -123,7 +123,8 @@ function relControl(thisField,col,rel,colName) {
         case 'oneToMany': {
             res.emb = {};
             res.link = {};
-            if(field.maxValue < 50){
+            if(field.maxValue < 50 || field.maxValue === undefined){
+
                 for(var f = 0; endCol.fields[f] !== undefined;f++) {
                     if(endCol.fields[f].type === "rel") {
                         if (!recursionCheck(endCol.name)) {
